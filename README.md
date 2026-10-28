@@ -8,7 +8,7 @@
    npm install
    npm run dev
    ```
-4. http://localhost:5173 öffnen
+4. http://localhost:5177 öffnen
 
 ## Struktur
 ```
