@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+/* Design tokens — README §6. Everything in the UI references these. */
+@theme {
+  --color-kaasen-blue: #141c5c;
+  --color-kaasen-yellow: #fbf389;
+  --color-cream: #f7f4ec;
+  --color-ink: #282828;
+  --color-accent: #3a4bb8;
+  /* Solid version of the tag background rgba(166,178,255,.22) — used for full-bleed sections. */
+  --color-lavender: #a6b2ff;
+  --color-tag-bg: rgb(166 178 255 / 0.22);
+  --color-line: rgb(20 28 92 / 0.08);
+  --color-line-strong: rgb(20 28 92 / 0.16);
+  --color-muted: #4a4a52;
+  --color-sand: #e6e1d4;
+  --color-sky: #e8ecf7;
+  --color-highlight: #fffbe0;
+  --color-yellow-deep: #e8dc5a;
+  --color-draft-bg: #fff7d6;
+  --color-draft-ink: #6b5600;
+  --color-danger: #c93838;
+  --color-success: #2e9e5b;
+
+  --font-sans: var(--font-montserrat), system-ui, sans-serif;
+
+  /* Type scale (clamp values from the design). */
+  --text-display: clamp(38px, 6vw, 84px);
+  --text-display--line-height: 1.04;
+  --text-h1: clamp(36px, 5.2vw, 68px);
+  --text-h1--line-height: 1.04;
+  --text-h1-product: clamp(38px, 5.4vw, 76px);
+  --text-h1-product--line-height: 1.04;
+  --text-h2: clamp(30px, 4vw, 54px);
+  --text-h2--line-height: 1.08;
+  --text-h2-lg: clamp(32px, 4vw, 58px);
+  --text-h2-lg--line-height: 1.08;
+  --text-h2-md: clamp(28px, 3.6vw, 48px);
+  --text-h2-md--line-height: 1.08;
+  --text-h2-sm: clamp(26px, 3.2vw, 42px);
+  --text-h2-sm--line-height: 1.1;
+  --text-h3: clamp(22px, 2.6vw, 30px);
+  --text-h3--line-height: 1.15;
+  --text-quote: clamp(20px, 2.4vw, 32px);
+  --text-quote--line-height: 1.25;
+  --text-eyebrow: 11.5px;
+  --text-micro: 12px;
+  --text-small: 13.5px;
+  --text-body: 15px;
+  --text-lead: 16.5px;
+
+  --tracking-eyebrow: 0.22em;
+  --tracking-label: 0.14em;
+  --tracking-tight-head: -0.015em;
+  --tracking-display: -0.025em;
+
+  /* Layout */
+  --container-site: 1280px;
+  --container-narrow: 880px;
+  --spacing-gutter: clamp(16px, 3vw, 36px);
+  --spacing-section: clamp(48px, 6vw, 90px);
+  --spacing-section-sm: clamp(28px, 3vw, 44px);
+  --spacing-panel: clamp(24px, 3vw, 36px);
+  --spacing-stack: clamp(24px, 3vw, 40px);
+
+  /* Radius */
+  --radius-input: 12px;
+  --radius-field: 14px;
+  --radius-tile: 18px;
+  --radius-card: 22px;
+  --radius-panel: 24px;
+  --radius-modal: 28px;
+  --radius-hero: 32px;
+
+  /* Shadow */
+  --shadow-card: 0 20px 50px -30px rgb(20 28 92 / 0.35);
+  --shadow-card-hover: 0 30px 60px -40px rgb(20 28 92 / 0.4);
+  --shadow-intent: 0 12px 30px -26px rgb(20 28 92 / 0.5);
+  --shadow-intent-hover: 0 24px 46px -28px rgb(20 28 92 / 0.7);
+  --shadow-hero: 0 40px 80px -40px rgb(20 28 92 / 0.5);
+  --shadow-panel-dark: 0 40px 80px -50px rgb(0 0 0 / 0.7);
+  --shadow-drawer: -30px 0 60px -20px rgb(20 28 92 / 0.35);
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-expand: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-ticker: ticker 34s linear infinite;
+  --animate-wave: wave 12s ease-in-out infinite;
+  --animate-pulse-slow: pulse-soft 14s ease-in-out infinite;
+  --animate-pulse-slower: pulse-soft 18s ease-in-out infinite reverse;
+  --animate-fade-up: fade-up 0.3s ease;
+  --animate-spin-slow: spin 0.9s linear infinite;
+  --animate-progress: progress 5s linear forwards;
+
+  @keyframes ticker {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes wave {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-24px); }
+  }
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.04); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+    overflow-x: clip;
+  }
+  body {
+    @apply bg-cream text-ink antialiased;
+    overflow-x: clip;
+  }
+  h1, h2, h3, h4 {
+    @apply font-bold text-kaasen-blue;
+    letter-spacing: var(--tracking-tight-head);
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+  a {
+    transition: color 0.2s ease;
+  }
+  ::selection {
+    @apply bg-kaasen-yellow text-kaasen-blue;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  h1, h2, h3, h4, p, span, a, li, strong, em, label {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Reusable composites (kept small; everything else is utilities). */
+@utility section-x {
+  padding-inline: var(--spacing-gutter);
+}
+@utility eyebrow {
+  font-size: var(--text-eyebrow);
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+}
+@utility label-caps {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Scroll reveal for sections (RevealOnScroll adds data-revealed). */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.9s var(--ease-soft), transform 0.9s var(--ease-soft);
+}
+[data-reveal][data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Native <details> accordion marker */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}

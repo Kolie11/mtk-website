@@ -1,0 +1,53 @@
+// Fachbereich webinar calendar. Dates/hosts are placeholders until the client sends real ones.
+import type { Webinar } from "@/lib/types";
+
+export const webinars: Webinar[] = [
+  {
+    id: "w1",
+    date: "2026-11-05",
+    time: "18:00–19:00 Uhr",
+    title: "Beckenbodentraining mit Biofeedback in der Praxis",
+    product: "Perifit · Emy",
+    topic: "Einsatz smarter Beckenbodentrainer, Indikationen und Verordnung.",
+    host: "[Name Moderation]",
+    platform: "Zoom",
+    url: "#",
+    registrationRequired: true,
+  },
+  {
+    id: "w2",
+    date: "2026-11-19",
+    time: "17:30–18:15 Uhr",
+    title: "Hilfsmittel bei Inkontinenz richtig verordnen",
+    product: "Verordnung",
+    topic: "Positionsnummern, Diagnosen und Kostenübernahme durch die GKV.",
+    host: "[Name Moderation]",
+    platform: "Microsoft Teams",
+    url: "#",
+    registrationRequired: false,
+  },
+  {
+    id: "w3",
+    date: "2026-12-03",
+    time: "18:00–19:00 Uhr",
+    title: "Dammvorbereitung mit Emagina",
+    product: "Emagina",
+    topic: "Studienlage und Anwendung in der Geburtsvorbereitung.",
+    host: "[Name Moderation]",
+    platform: "Zoom",
+    url: "#",
+    registrationRequired: true,
+  },
+  {
+    id: "w4",
+    date: "2026-12-17",
+    time: "16:00–17:00 Uhr",
+    title: "MAPLe: Beckenbodendiagnostik in der Praxis",
+    product: "MAPLe",
+    topic: "Messung, Auswertung und Therapieplanung mit MAPLe.",
+    host: "[Name Moderation]",
+    platform: "Zoom",
+    url: "#",
+    registrationRequired: false,
+  },
+];

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Für Fachpersonen — Medizintechnik Kaasen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#f7f4ec;color:#282828;font-family:Montserrat,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#141c5c}
+a:hover{color:#3a4bb8}
+button,input,textarea,select{font-family:inherit}
+@keyframes kfFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes kfSpin{to{transform:rotate(360deg)}}
+@keyframes kfBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column">
+
+<!-- Kopfzeile -->
+<header style="position:sticky;top:0;z-index:40;background:rgba(247,244,236,.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(20,28,92,.08)">
+  <div style="max-width:1280px;margin:0 auto;padding:14px clamp(16px,3vw,36px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none">
+      <img src="img/logo-kaasen.png" alt="Medizintechnik Kaasen" style="height:40px;width:auto;display:block">
+      <span style="padding:5px 10px;border-radius:999px;background:#141c5c;color:#fbf389;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase">Fachbereich</span>
+    </a>
+    <nav style="display:flex;align-items:center;gap:clamp(12px,2vw,26px);flex-wrap:wrap;font-size:14px;font-weight:600">
+      <a href="#fVerordnung" style="text-decoration:none">Verordnung</a>
+      <a href="#fProdukte" style="text-decoration:none">Produkte</a>
+      <a href="#fWebinare" style="text-decoration:none">Webinare</a>
+      <a href="#fKontakt" style="text-decoration:none">Kontakt</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <a href="index.html" style="font-size:13px;font-weight:600;color:rgba(40,40,40,.75);text-decoration:none;padding:8px 6px">Für Privatpersonen</a>
+      <sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+        <button type="button" onClick="{{ openLoginModal }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:0;border-radius:999px;background:#141c5c;color:#fbf389;font-size:13px;font-weight:700;cursor:pointer;min-height:40px" style-hover="background:#282828"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Login</button>
+      </sc-if>
+      <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+        <span style="display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border-radius:999px;background:#fff;border:1px solid rgba(20,28,92,.12)">
+          <span style="width:8px;height:8px;border-radius:50%;background:#2e9e5b;flex:none"></span>
+          <span style="font-size:12.5px;font-weight:600;color:#141c5c;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ userLabel }}</span>
+          <button type="button" onClick="{{ logout }}" style="padding:7px 12px;border:0;border-radius:999px;background:#141c5c;color:#fbf389;font-size:12px;font-weight:700;cursor:pointer" style-hover="background:#282828">Abmelden</button>
+        </span>
+      </sc-if>
+    </div>
+  </div>
+</header>
+
+<main style="flex:1">
+
+<!-- 01 Banner & Schnellaktionen -->
+<section data-screen-label="01 Banner" style="background:#141c5c;color:#f7f4ec;padding:clamp(48px,7vw,96px) clamp(16px,3vw,36px) clamp(40px,5vw,64px)">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,4vw,48px)">
+    <div style="display:flex;flex-direction:column;gap:18px;max-width:780px">
+      <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#fbf389;font-weight:700">Für Fachpersonen · Ärzt:innen · Hebammen · Physiotherapie</span>
+      <h1 style="margin:0;font-size:clamp(36px,5.2vw,68px);line-height:1.04;font-weight:800;letter-spacing:-.01em">Hilfsmittel verordnen — <em style="font-style:italic;font-weight:700;color:#fbf389">klar und schnell</em>.</h1>
+      <p style="margin:0;font-size:clamp(15px,1.4vw,18px);line-height:1.65;color:rgba(247,244,236,.82);text-wrap:pretty">Hilfsmittelnummern, Produktinfos, Flyer und Webinare für Ihre Praxis — gebündelt an einem Ort.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px">
+      <a href="#fVerordnung" style="display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:20px;background:rgba(247,244,236,.07);border:1px solid rgba(247,244,236,.16);color:#f7f4ec;text-decoration:none;transition:background .2s" style-hover="background:rgba(247,244,236,.14);color:#f7f4ec">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.14em;color:#fbf389">01</span>
+        <strong style="font-size:18px">Infos für Verordnende</strong>
+        <span style="font-size:13.5px;line-height:1.55;color:rgba(247,244,236,.75)">Hilfsmittelnummer &amp; Diagnosen auf einen Blick</span>
+      </a>
+      <a href="#fWebinare" style="display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:20px;background:rgba(247,244,236,.07);border:1px solid rgba(247,244,236,.16);color:#f7f4ec;text-decoration:none;transition:background .2s" style-hover="background:rgba(247,244,236,.14);color:#f7f4ec">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.14em;color:#fbf389">02</span>
+        <strong style="font-size:18px">Webinare</strong>
+        <span style="font-size:13.5px;line-height:1.55;color:rgba(247,244,236,.75)">Termine im Kalender, mit Anmeldung</span>
+      </a>
+      <button type="button" onClick="{{ openFlyerPanel }}" style="display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:20px;background:#fbf389;border:1px solid #fbf389;color:#141c5c;text-align:left;cursor:pointer;font:inherit;transition:transform .2s" style-hover="transform:translateY(-2px)">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.14em">03</span>
+        <strong style="font-size:18px">Produktinfos / Flyer</strong>
+        <span style="font-size:13.5px;line-height:1.55;color:rgba(20,28,92,.8)">Downloads für Praxis und Patient:innen</span>
+      </button>
+      <a href="#fProdukte" style="display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:20px;background:rgba(247,244,236,.07);border:1px solid rgba(247,244,236,.16);color:#f7f4ec;text-decoration:none;transition:background .2s" style-hover="background:rgba(247,244,236,.14);color:#f7f4ec">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.14em;color:#fbf389">04</span>
+        <strong style="font-size:18px">Produkte</strong>
+        <span style="font-size:13.5px;line-height:1.55;color:rgba(247,244,236,.75)">Alle Hilfsmittel mit Zubehör</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 02 Schnellinfos für Verordnende -->
+<section id="fVerordnung" data-screen-label="02 Verordnung" style="padding:clamp(56px,7vw,96px) clamp(16px,3vw,36px);scroll-margin-top:80px">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:640px">
+        <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#3a4bb8;font-weight:700">Schnellinfos für Verordnende</span>
+        <h2 style="margin:0;font-size:clamp(30px,3.6vw,48px);line-height:1.08;color:#141c5c">Verordnung <em style="font-style:italic;color:#3a4bb8">auf einen Blick</em>.</h2>
+      </div>
+      <span style="font-size:12.5px;color:rgba(40,40,40,.7)">Positionsnummern laut REHADAT · Diagnosen beispielhaft</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px">
+      <sc-for list="{{ quickInfos }}" as="q" hint-placeholder-count="3">
+        <article style="display:flex;flex-direction:column;border-radius:22px;background:#fff;border:1px solid rgba(20,28,92,.08);overflow:hidden">
+          <div style="display:flex;gap:16px;align-items:center;padding:20px 20px 0">
+            <div style="flex:none;width:84px;height:84px;border-radius:16px;background:#f7f4ec;display:grid;place-items:center;overflow:hidden">
+              <img src="{{ q.img }}" alt="{{ q.name }}" style="width:100%;height:100%;object-fit:contain;padding:8px;display:block">
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+              <strong style="font-size:20px;color:#141c5c">{{ q.name }}</strong>
+              <span style="font-size:12.5px;color:rgba(40,40,40,.7)">{{ q.type }}</span>
+            </div>
+          </div>
+          <dl style="margin:0;padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <dt style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(20,28,92,.7)">Hilfsmittelnummer</dt>
+              <dd style="margin:0;font-size:19px;font-weight:800;color:#141c5c;letter-spacing:.02em;font-variant-numeric:tabular-nums">{{ q.hmv }}</dd>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <dt style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(20,28,92,.7)">Häufige Diagnosen</dt>
+              <dd style="margin:0;display:flex;flex-wrap:wrap;gap:6px">
+                <sc-for list="{{ q.dx }}" as="d" hint-placeholder-count="3"><span style="padding:5px 11px;border-radius:999px;background:rgba(166,178,255,.22);color:#3a4bb8;font-size:12px;font-weight:600">{{ d }}</span></sc-for>
+              </dd>
+            </div>
+          </dl>
+          <a href="{{ q.href }}" style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-top:1px solid rgba(20,28,92,.08);font-size:14px;font-weight:700;text-decoration:none;color:#141c5c" style-hover="background:#fbf389;color:#141c5c">Zur Fachproduktseite <span aria-hidden="true">→</span></a>
+        </article>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- 03 Produktübersicht -->
+<section id="fProdukte" data-screen-label="03 Produkte" style="padding:clamp(56px,7vw,96px) clamp(16px,3vw,36px);background:#fff;scroll-margin-top:80px">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;flex-direction:column;gap:12px;max-width:640px">
+      <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#3a4bb8;font-weight:700">Produktübersicht</span>
+      <h2 style="margin:0;font-size:clamp(30px,3.6vw,48px);line-height:1.08;color:#141c5c">Acht Hilfsmittel, <em style="font-style:italic;color:#3a4bb8">ein Ansprechpartner</em>.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:14px">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="8">
+        <article style="display:flex;flex-direction:column;border-radius:20px;background:#f7f4ec;overflow:hidden;border:1px solid rgba(20,28,92,.06)">
+          <div style="position:relative;aspect-ratio:4/3;background:#fff;display:grid;place-items:center">
+            <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ true }}"><img src="{{ p.img }}" alt="{{ p.name }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:18px;display:block"></sc-if>
+            <sc-if value="{{ p.noImg }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(20,28,92,.45);font-weight:700">Produktbild folgt</span></sc-if>
+            <span style="position:absolute;top:12px;left:12px;padding:5px 10px;border-radius:999px;background:#141c5c;color:#fbf389;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase">{{ p.cat }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;padding:18px;flex:1">
+            <strong style="font-size:17px;color:#141c5c">{{ p.name }}</strong>
+            <span style="font-size:13.5px;line-height:1.55;color:rgba(40,40,40,.75);text-wrap:pretty">{{ p.desc }}</span>
+            <sc-if value="{{ p.hasAcc }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;padding-top:10px;border-top:1px dashed rgba(20,28,92,.18)">
+                <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(20,28,92,.7)">Zubehör</span>
+                <sc-for list="{{ p.acc }}" as="a" hint-placeholder-count="2"><span style="display:flex;gap:8px;align-items:center;font-size:13px;color:#141c5c;font-weight:600"><span style="width:6px;height:6px;border-radius:50%;background:#3a4bb8;flex:none"></span>{{ a }}</span></sc-for>
+              </div>
+            </sc-if>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:auto;padding-top:14px;border-top:1px solid rgba(20,28,92,.1)">
+              <sc-if value="{{ p.lockedFach }}" hint-placeholder-val="{{ false }}">
+                <button type="button" onClick="{{ openLoginModal }}" style="display:flex;align-items:center;gap:8px;padding:0;border:0;background:none;font-size:12.5px;font-weight:700;color:#3a4bb8;cursor:pointer;text-align:left"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Fachpersonenpreis nach Login</button>
+              </sc-if>
+              <sc-if value="{{ p.showFach }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap">
+                  <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#3a4bb8">Fachpersonenpreis</span>
+                  <span style="display:flex;align-items:baseline;gap:6px"><strong style="font-size:20px;color:#141c5c">{{ p.fachPrice }}</strong><span style="font-size:12px;color:rgba(40,40,40,.7)">{{ p.fachUnit }}</span></span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ p.noFach }}" hint-placeholder-val="{{ true }}">
+                <span style="font-size:12.5px;color:rgba(40,40,40,.7)">Preis wie im Privatbereich</span>
+              </sc-if>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+                <a href="{{ p.href }}" style="font-size:13.5px;font-weight:700;color:#141c5c;text-decoration:none" style-hover="color:#3a4bb8">Produktinfo →</a>
+                <button type="button" onClick="{{ p.openDocs }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border:0;border-radius:999px;background:#fbf389;color:#141c5c;font-size:12.5px;font-weight:700;cursor:pointer;min-height:40px" style-hover="background:#141c5c;color:#fbf389"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"></path><path d="m7 10 5 5 5-5"></path><path d="M5 20h14"></path></svg>{{ docsLabel }}</button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- 04 Testimonials -->
+<section data-screen-label="04 Testimonials" style="padding:clamp(56px,7vw,96px) clamp(16px,3vw,36px)">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:640px">
+        <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#3a4bb8;font-weight:700">Erfahrungen</span>
+        <h2 style="margin:0;font-size:clamp(30px,3.6vw,48px);line-height:1.08;color:#141c5c">Stimmen aus <em style="font-style:italic;color:#3a4bb8">Praxis und Alltag</em>.</h2>
+      </div>
+      <span style="font-size:12.5px;color:rgba(40,40,40,.7)">Beispieltexte — echte Stimmen folgen</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:20px">
+      <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="4">
+        <figure style="margin:0;display:flex;flex-direction:column;gap:16px">
+          <blockquote style="position:relative;margin:0;padding:22px 22px 24px;border-radius:22px 22px 22px 6px;background:{{ t.bubble }};color:{{ t.ink }};font-size:15px;line-height:1.65;text-wrap:pretty">„{{ t.quote }}“</blockquote>
+          <figcaption style="display:flex;align-items:center;gap:12px;padding-left:6px">
+            <span style="flex:none;display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#e6e1d4;color:#141c5c;font-size:14px;font-weight:800">{{ t.initials }}</span>
+            <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+              <strong style="font-size:14px;color:#141c5c">{{ t.name }}</strong>
+              <span style="font-size:12.5px;color:rgba(40,40,40,.72)">{{ t.role }} · <b style="color:#3a4bb8;font-weight:700">{{ t.product }}</b></span>
+            </span>
+          </figcaption>
+        </figure>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- 05 Webinare -->
+<section id="fWebinare" data-screen-label="05 Webinare" style="padding:clamp(56px,7vw,96px) clamp(16px,3vw,36px);background:#141c5c;color:#f7f4ec;scroll-margin-top:80px">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;flex-direction:column;gap:12px;max-width:640px">
+      <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#fbf389;font-weight:700">Webinare</span>
+      <h2 style="margin:0;font-size:clamp(30px,3.6vw,48px);line-height:1.08">Fortbildung <em style="font-style:italic;color:#fbf389">im Kalender</em>.</h2>
+      <p style="margin:0;font-size:15px;line-height:1.65;color:rgba(247,244,236,.78)">Termin anklicken, um Details und Plattform-Link zu sehen.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:20px;align-items:start">
+      <div style="padding:clamp(18px,2.4vw,26px);border-radius:24px;background:#f7f4ec;color:#282828">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px">
+          <button type="button" onClick="{{ prevMonth }}" aria-label="Vorheriger Monat" style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid rgba(20,28,92,.16);background:#fff;color:#141c5c;font-size:16px;cursor:pointer" style-hover="background:#141c5c;color:#fbf389">‹</button>
+          <strong style="font-size:18px;color:#141c5c">{{ monthLabel }}</strong>
+          <button type="button" onClick="{{ nextMonth }}" aria-label="Nächster Monat" style="display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid rgba(20,28,92,.16);background:#fff;color:#141c5c;font-size:16px;cursor:pointer" style-hover="background:#141c5c;color:#fbf389">›</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center">
+          <sc-for list="{{ weekdays }}" as="wd" hint-placeholder-count="7"><span style="padding:6px 0;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(20,28,92,.6)">{{ wd }}</span></sc-for>
+          <sc-for list="{{ cells }}" as="c" hint-placeholder-count="35">
+            <button type="button" onClick="{{ c.pick }}" disabled="{{ c.off }}" aria-label="{{ c.aria }}" style="position:relative;aspect-ratio:1;min-height:40px;border-radius:12px;border:1px solid {{ c.border }};background:{{ c.bg }};color:{{ c.fg }};font-size:14px;font-weight:{{ c.fw }};cursor:{{ c.cursor }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:0">
+              <span>{{ c.label }}</span>
+              <span style="width:6px;height:6px;border-radius:50%;background:{{ c.dot }}"></span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(20,28,92,.1)">
+          <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(20,28,92,.7)">Nächste Termine</span>
+          <sc-for list="{{ upcoming }}" as="u" hint-placeholder-count="4">
+            <button type="button" onClick="{{ u.pick }}" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:0;border-radius:12px;background:{{ u.bg }};text-align:left;cursor:pointer;font:inherit;color:#141c5c" style-hover="background:#fff">
+              <span style="flex:none;min-width:58px;font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums">{{ u.short }}</span>
+              <span style="font-size:13.5px;font-weight:600;line-height:1.4">{{ u.title }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="padding:clamp(22px,3vw,32px);border-radius:24px;background:#fff;color:#282828;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span style="padding:5px 11px;border-radius:999px;background:#fbf389;color:#141c5c;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">{{ w.dateLabel }}</span>
+          <span style="padding:5px 11px;border-radius:999px;background:rgba(166,178,255,.22);color:#3a4bb8;font-size:11px;font-weight:700">{{ w.product }}</span>
+        </div>
+        <h3 style="margin:0;font-size:clamp(22px,2.4vw,30px);line-height:1.18;color:#141c5c">{{ w.title }}</h3>
+        <dl style="margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 18px;font-size:14.5px;line-height:1.5">
+          <dt style="font-weight:700;color:rgba(20,28,92,.75)">Thema</dt><dd style="margin:0;text-wrap:pretty">{{ w.topic }}</dd>
+          <dt style="font-weight:700;color:rgba(20,28,92,.75)">Datum</dt><dd style="margin:0">{{ w.dateLong }}</dd>
+          <dt style="font-weight:700;color:rgba(20,28,92,.75)">Uhrzeit</dt><dd style="margin:0">{{ w.time }}</dd>
+          <dt style="font-weight:700;color:rgba(20,28,92,.75)">Moderation</dt><dd style="margin:0">{{ w.mod }}</dd>
+          <dt style="font-weight:700;color:rgba(20,28,92,.75)">Plattform</dt><dd style="margin:0"><a href="{{ w.url }}" target="_blank" rel="noopener" style="font-weight:700;text-decoration:underline">{{ w.platform }}</a></dd>
+        </dl>
+        <sc-if value="{{ w.reg }}" hint-placeholder-val="{{ true }}">
+          <sc-if value="{{ regFormOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:10px;padding:16px;border-radius:16px;background:#f7f4ec">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px">
+                <input placeholder="Name" style="width:100%;padding:12px 14px;border:1px solid rgba(20,28,92,.16);border-radius:12px;background:#fff;font-size:14px">
+                <input type="email" placeholder="E-Mail" style="width:100%;padding:12px 14px;border:1px solid rgba(20,28,92,.16);border-radius:12px;background:#fff;font-size:14px">
+              </div>
+              <button type="button" onClick="{{ sendWebReg }}" style="align-self:flex-start;padding:12px 22px;border:0;border-radius:999px;background:#141c5c;color:#fbf389;font-size:14px;font-weight:700;cursor:pointer">Anmeldung absenden</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ regDone }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:14px 16px;border-radius:14px;background:#141c5c;color:#f7f4ec;font-size:14px;line-height:1.55"><strong style="color:#fbf389">Danke!</strong> Sie erhalten die Zugangsdaten per Mail.</div>
+          </sc-if>
+          <sc-if value="{{ regBtn }}" hint-placeholder-val="{{ true }}">
+            <button type="button" onClick="{{ openWebReg }}" style="align-self:flex-start;padding:14px 26px;border:0;border-radius:999px;background:#141c5c;color:#fbf389;font-size:14.5px;font-weight:700;cursor:pointer" style-hover="background:#282828">Zum Webinar anmelden</button>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{ w.noReg }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:14px;background:#f7f4ec;border:1px solid rgba(20,28,92,.1)">
+            <span style="font-size:14px;color:#141c5c"><strong>Keine Anmeldung erforderlich.</strong> Einfach zum Termin über den Link teilnehmen.</span>
+            <a href="{{ w.url }}" target="_blank" rel="noopener" style="padding:11px 20px;border-radius:999px;background:#141c5c;color:#fbf389;font-size:13.5px;font-weight:700;text-decoration:none" style-hover="background:#282828;color:#fbf389">Zum Webinar</a>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 Fachkreisnewsletter -->
+<section data-screen-label="06 Newsletter" style="padding:clamp(48px,6vw,80px) clamp(16px,3vw,36px)">
+  <div style="max-width:1280px;margin:0 auto;padding:clamp(26px,4vw,48px);border-radius:28px;background:#fbf389;color:#141c5c;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px">
+    <div style="display:flex;flex-direction:column;gap:10px;flex:1 1 360px;min-width:0">
+      <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700">Fachkreis-Newsletter</span>
+      <h2 style="margin:0;font-size:clamp(26px,3vw,40px);line-height:1.1">Neue Webinare &amp; Produktinfos direkt ins Postfach.</h2>
+    </div>
+    <sc-if value="{{ nlForm }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;flex:1 1 380px;min-width:0">
+        <input type="email" placeholder="E-Mail-Adresse" aria-label="E-Mail-Adresse" style="flex:1 1 220px;min-width:0;padding:15px 18px;border:1px solid rgba(20,28,92,.2);border-radius:999px;background:#fff;font-size:14.5px;color:#282828">
+        <button type="button" onClick="{{ sendNl }}" style="padding:15px 26px;border:0;border-radius:999px;background:#141c5c;color:#fbf389;font-size:14.5px;font-weight:700;cursor:pointer" style-hover="background:#282828">Newsletter abonnieren</button>
+      </div>
+    </sc-if>
+    <sc-if value="{{ nlSent }}" hint-placeholder-val="{{ false }}">
+      <span style="flex:1 1 380px;font-size:16px;font-weight:700">Danke! Bitte bestätigen Sie Ihre Anmeldung in der E-Mail.</span>
+    </sc-if>
+  </div>
+</section>
+
+<!-- 07 Kontakt / Infomaterial -->
+<section id="fKontakt" data-screen-label="07 Kontakt" style="padding:clamp(56px,7vw,96px) clamp(16px,3vw,36px);background:#fff;scroll-margin-top:80px">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(24px,4vw,48px);align-items:start">
+    <div style="display:flex;flex-direction:column;gap:20px;min-width:0">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#3a4bb8;font-weight:700">Kontakt</span>
+        <h2 style="margin:0;font-size:clamp(30px,3.6vw,48px);line-height:1.08;color:#141c5c">Fragen oder <em style="font-style:italic;color:#3a4bb8">Infomaterial</em>?</h2>
+      </div>
+      <div role="tablist" style="display:inline-flex;align-self:flex-start;padding:4px;border-radius:999px;background:#f7f4ec;border:1px solid rgba(20,28,92,.1)">
+        <button type="button" role="tab" onClick="{{ tabKontakt }}" style="padding:10px 18px;border:0;border-radius:999px;background:{{ tabA.bg }};color:{{ tabA.fg }};font-size:13.5px;font-weight:700;cursor:pointer">Kontaktanfrage</button>
+        <button type="button" role="tab" onClick="{{ tabFlyer }}" style="padding:10px 18px;border:0;border-radius:999px;background:{{ tabB.bg }};color:{{ tabB.fg }};font-size:13.5px;font-weight:700;cursor:pointer">Infomaterial bestellen</button>
+      </div>
+
+      <sc-if value="{{ formSent }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;padding:24px;border-radius:20px;background:#f7f4ec">
+          <span style="display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#fbf389;color:#141c5c;font-size:20px;font-weight:800">✓</span>
+          <strong style="font-size:20px;color:#141c5c">{{ sentTitle }}</strong>
+          <span style="font-size:14.5px;line-height:1.6;color:rgba(40,40,40,.78)">Wir melden uns schnellstmöglich bei Ihnen.</span>
+          <button type="button" onClick="{{ resetForm }}" style="padding:10px 18px;border:1.5px solid #141c5c;border-radius:999px;background:transparent;color:#141c5c;font-size:13.5px;font-weight:700;cursor:pointer">Neue Anfrage</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showFlyerForm }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13.5px;color:rgba(40,40,40,.78)">Alles markieren, was Sie haben möchten:</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:8px">
+            <sc-for list="{{ flyers }}" as="f" hint-placeholder-count="7">
+              <label style="display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;border:1.5px solid {{ f.border }};background:{{ f.bg }};cursor:pointer;min-width:0">
+                <input type="checkbox" checked="{{ f.on }}" onChange="{{ f.toggle }}" style="flex:none;width:18px;height:18px;accent-color:#141c5c">
+                <span style="flex:none;width:44px;height:44px;border-radius:10px;background:#fff;overflow:hidden;display:grid;place-items:center"><img src="{{ f.img }}" alt="" style="width:100%;height:100%;object-fit:contain;padding:4px;display:block"></span>
+                <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                  <strong style="font-size:13px;line-height:1.35;color:#141c5c">{{ f.title }}</strong>
+                  <span style="font-size:11.5px;line-height:1.4;color:rgba(40,40,40,.7)">{{ f.desc }}</span>
+                </span>
+              </label>
+            </sc-for>
+          </div>
+          <span style="font-size:12.5px;font-weight:700;color:#3a4bb8">{{ flyerCount }}</span>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px">
+            <sc-for list="{{ formFields }}" as="ff" hint-placeholder-count="4">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#141c5c;min-width:0">{{ ff.l }}<input type="{{ ff.t }}" style="width:100%;padding:13px 15px;border:1px solid rgba(20,28,92,.16);border-radius:12px;background:#fff;font-size:14.5px;color:#282828;text-transform:none;letter-spacing:0;font-weight:500"></label>
+            </sc-for>
+          </div>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#141c5c">{{ msgLabel }}<textarea rows="4" style="width:100%;padding:13px 15px;border:1px solid rgba(20,28,92,.16);border-radius:12px;background:#fff;font-size:14.5px;color:#282828;resize:vertical;text-transform:none;letter-spacing:0;font-weight:500"></textarea></label>
+          <label style="display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.55;color:rgba(40,40,40,.8)"><input type="checkbox" style="margin-top:3px;flex:none"><span>Ich stimme zu, dass meine Angaben zur Bearbeitung gespeichert werden (<a href="index.html#datenschutz">Datenschutz</a>).</span></label>
+          <button type="button" onClick="{{ sendForm }}" style="align-self:flex-start;padding:15px 28px;border:0;border-radius:999px;background:#141c5c;color:#fbf389;font-size:14.5px;font-weight:700;cursor:pointer" style-hover="background:#282828">{{ submitLabel }}</button>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;min-width:0">
+      <div style="position:relative;border-radius:24px;overflow:hidden;background:#e6e1d4;aspect-ratio:4/3">
+        <iframe title="Karte Medizintechnik Kaasen" src="https://maps.google.com/maps?q=Zum%20Gewerbepark%204%2C%2044532%20L%C3%BCnen&z=14&output=embed" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px">
+        <div style="display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:16px;background:#f7f4ec">
+          <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(20,28,92,.7)">Adresse</span>
+          <span style="font-size:14px;line-height:1.55;color:#141c5c">Zum Gewerbepark 4<br>44532 Lünen</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:16px;background:#f7f4ec">
+          <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(20,28,92,.7)">Telefon &amp; Mail</span>
+          <a href="tel:+4923063060900" style="font-size:14px;font-weight:700;text-decoration:none">02306 30609-0</a>
+          <a href="mailto:medizintechnik@kaasen.de" style="font-size:14px;text-decoration:none">medizintechnik@kaasen.de</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:16px;background:#f7f4ec">
+          <span style="font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:rgba(20,28,92,.7)">Erreichbar</span>
+          <span style="font-size:14px;line-height:1.55;color:#141c5c">Mo–Do 8:00–17:00 Uhr<br>Fr 8:00–16:00 Uhr</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- 08 Footer -->
+<footer data-screen-label="08 Footer" style="background:#141c5c;color:rgba(247,244,236,.78);padding:clamp(40px,5vw,64px) clamp(16px,3vw,36px) 28px">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:28px">
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:340px">
+        <strong style="font-size:18px;color:#f7f4ec">Medizintechnik Kaasen GmbH</strong>
+        <span style="font-size:13.5px;line-height:1.6">Zum Gewerbepark 4 · 44532 Lünen<br>02306 30609-0 · medizintechnik@kaasen.de</span>
+      </div>
+      <nav style="display:flex;flex-wrap:wrap;gap:10px 22px;font-size:13.5px;align-content:flex-start">
+        <a href="#fVerordnung" style="color:rgba(247,244,236,.78);text-decoration:none">Verordnung</a>
+        <a href="#fProdukte" style="color:rgba(247,244,236,.78);text-decoration:none">Produkte</a>
+        <a href="#fWebinare" style="color:rgba(247,244,236,.78);text-decoration:none">Webinare</a>
+        <a href="#fKontakt" style="color:rgba(247,244,236,.78);text-decoration:none">Kontakt</a>
+        <a href="index.html" style="color:rgba(247,244,236,.78);text-decoration:none">Für Privatpersonen</a>
+      </nav>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:20px;border-top:1px solid rgba(247,244,236,.14);font-size:12.5px">
+      <span>© 2026 Medizintechnik Kaasen GmbH</span>
+      <div style="display:flex;flex-wrap:wrap;gap:16px">
+        <a href="index.html#impressum" style="color:rgba(247,244,236,.78);text-decoration:none">Impressum</a>
+        <a href="index.html#datenschutz" style="color:rgba(247,244,236,.78);text-decoration:none">Datenschutz</a>
+        <a href="index.html#agb" style="color:rgba(247,244,236,.78);text-decoration:none">AGB</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<!-- C · Downloadübersicht Flyer -->
+<sc-if value="{{ flyerPanel }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeFlyerPanel }}" style="position:fixed;inset:0;z-index:80;background:rgba(20,28,92,.5);backdrop-filter:blur(3px)"></div>
+  <aside role="dialog" aria-label="Produktinfos und Flyer" style="position:fixed;top:0;right:0;bottom:0;z-index:81;width:min(520px,100%);background:#f7f4ec;display:flex;flex-direction:column;box-shadow:-20px 0 60px -30px rgba(20,28,92,.5);animation:kfFade .3s ease">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 24px;border-bottom:1px solid rgba(20,28,92,.1)">
+      <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#3a4bb8;font-weight:700">Downloads</span><strong style="font-size:22px;color:#141c5c">Produktinfos / Flyer</strong></div>
+      <button type="button" onClick="{{ closeFlyerPanel }}" aria-label="Schließen" style="display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(20,28,92,.16);border-radius:50%;background:#fff;color:#141c5c;font-size:18px;cursor:pointer">×</button>
+    </div>
+    <div style="flex:1;overflow:auto;padding:12px 24px 24px;display:flex;flex-direction:column;gap:8px">
+      <sc-for list="{{ downloads }}" as="dl" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:16px;background:#fff;border:1px solid rgba(20,28,92,.08)">
+          <span style="flex:none;display:grid;place-items:center;width:44px;height:52px;border-radius:8px;background:#141c5c;color:#fbf389;font-size:10.5px;font-weight:800;letter-spacing:.06em">{{ dl.fmt }}</span>
+          <span style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#3a4bb8">{{ dl.prod }}</span>
+            <strong style="font-size:14px;line-height:1.35;color:#141c5c">{{ dl.title }}</strong>
+          </span>
+          <a href="#" onClick="{{ dl.get }}" style="flex:none;padding:9px 14px;border-radius:999px;background:#fbf389;color:#141c5c;font-size:12.5px;font-weight:700;text-decoration:none" style-hover="background:#141c5c;color:#fbf389">Herunterladen</a>
+        </div>
+      </sc-for>
+      <span style="font-size:12px;color:rgba(40,40,40,.65);padding-top:6px">Platzhalter — PDFs werden ergänzt. Gedruckte Flyer: Formular „Infomaterial bestellen“.</span>
+      <button type="button" onClick="{{ goOrderFlyer }}" style="align-self:flex-start;padding:12px 20px;border:1.5px solid #141c5c;border-radius:999px;background:transparent;color:#141c5c;font-size:13.5px;font-weight:700;cursor:pointer" style-hover="background:#141c5c;color:#fbf389">Gedruckt bestellen →</button>
+    </div>
+  </aside>
+</sc-if>
+
+<!-- D · Produktunterlagen (nach Login) -->
+<sc-if value="{{ docsOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeDocs }}" style="position:fixed;inset:0;z-index:80;background:rgba(20,28,92,.5);backdrop-filter:blur(3px)"></div>
+  <aside role="dialog" aria-label="Produktunterlagen" style="position:fixed;top:0;right:0;bottom:0;z-index:81;width:min(560px,100%);background:#f7f4ec;display:flex;flex-direction:column;box-shadow:-20px 0 60px -30px rgba(20,28,92,.5);animation:kfFade .3s ease">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:22px 24px;border-bottom:1px solid rgba(20,28,92,.1)">
+      <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+        <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#3a4bb8;font-weight:700">Unterlagen für Fachpersonen</span>
+        <strong style="font-size:22px;color:#141c5c">{{ docs.name }}</strong>
+        <sc-if value="{{ docs.hasFach }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#141c5c">Fachpersonenpreis: <b>{{ docs.fachPrice }}</b> {{ docs.fachUnit }}</span></sc-if>
+      </div>
+      <button type="button" onClick="{{ closeDocs }}" aria-label="Schließen" style="flex:none;display:grid;place-items:center;width:40px;height:40px;border:1px solid rgba(20,28,92,.16);border-radius:50%;background:#fff;color:#141c5c;font-size:18px;cursor:pointer">×</button>
+    </div>
+    <div style="flex:1;overflow:auto;padding:16px 24px 24px;display:flex;flex-direction:column;gap:20px">
+      <sc-for list="{{ docs.groups }}" as="g" hint-placeholder-count="4">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:rgba(20,28,92,.7)">{{ g.label }}</span>
+          <sc-for list="{{ g.items }}" as="dl" hint-placeholder-count="1">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:#fff;border:1px solid rgba(20,28,92,.08)">
+              <span style="flex:none;display:grid;place-items:center;width:40px;height:48px;border-radius:8px;background:#141c5c;color:#fbf389;font-size:10px;font-weight:800;letter-spacing:.06em">PDF</span>
+              <strong style="flex:1;min-width:0;font-size:14px;line-height:1.35;color:#141c5c">{{ dl.title }}</strong>
+              <a href="#" onClick="{{ dl.get }}" style="flex:none;padding:9px 14px;border-radius:999px;background:#fbf389;color:#141c5c;font-size:12.5px;font-weight:700;text-decoration:none" style-hover="background:#141c5c;color:#fbf389">Herunterladen</a>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+      <span style="font-size:12px;color:rgba(40,40,40,.65)">Platzhalter — die PDFs werden im Admin hochgeladen.</span>
+    </div>
+  </aside>
+</sc-if>
+
+<sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">{{ loader }}</sc-if>
+
+<!-- A · Fachpersonen-Abfrage -->
+<!-- B · Login (Variante Julien) -->
+<sc-if value="{{ loginOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:100;background:rgba(20,28,92,.72);backdrop-filter:blur(6px);display:grid;place-items:center;padding:16px;overflow:auto">
+    <div role="dialog" aria-modal="true" aria-label="Login Fachbereich" style="width:min(480px,100%);padding:clamp(24px,4vw,36px);border-radius:28px;background:#f7f4ec;display:flex;flex-direction:column;gap:18px;animation:kfFade .3s ease">
+      <img src="img/logo-kaasen.png" alt="Medizintechnik Kaasen" style="height:36px;width:auto;align-self:flex-start">
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:4px;border-radius:999px;background:#fff;border:1px solid rgba(20,28,92,.1)">
+        <button type="button" onClick="{{ openLogin }}" style="padding:10px;border:0;border-radius:999px;background:{{ authTabA.bg }};color:{{ authTabA.fg }};font-size:13.5px;font-weight:700;cursor:pointer">Anmelden</button>
+        <button type="button" onClick="{{ openRegister }}" style="padding:10px;border:0;border-radius:999px;background:{{ authTabB.bg }};color:{{ authTabB.fg }};font-size:13.5px;font-weight:700;cursor:pointer">Zugang beantragen</button>
+      </div>
+      <sc-if value="{{ showLogin }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <h2 style="margin:0;font-size:clamp(24px,3vw,30px);line-height:1.15;color:#141c5c">Login für Fachpersonen</h2>
+          <p style="margin:0;font-size:14px;line-height:1.6;color:rgba(40,40,40,.8)">Nach dem Login sehen Sie Fachpersonenpreise und können Studien, Flyer, Gebrauchsanweisungen und CE-Dokumente herunterladen.</p>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#141c5c">E-Mail<input type="email" value="{{ email }}" onChange="{{ setEmail }}" placeholder="name@praxis.de" style="padding:13px 14px;border:1px solid rgba(20,28,92,.18);border-radius:12px;background:#fff;font-size:15px"></label>
+          <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#141c5c">Passwort<input type="password" placeholder="••••••••" style="padding:13px 14px;border:1px solid rgba(20,28,92,.18);border-radius:12px;background:#fff;font-size:15px"></label>
+          <a href="#" onClick="{{ forgot }}" style="align-self:flex-end;font-size:12.5px;font-weight:600;color:#3a4bb8;text-decoration:none">Passwort vergessen?</a>
+          <sc-if value="{{ loginMsg }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px;color:#3a4bb8">Wir haben Ihnen einen Link zum Zurücksetzen per E-Mail geschickt.</span></sc-if>
+          <button type="button" onClick="{{ doLogin }}" style="padding:15px 18px;border:0;border-radius:999px;background:#141c5c;color:#fbf389;font-size:15px;font-weight:700;cursor:pointer" style-hover="background:#282828">Anmelden</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ showRegister }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0;font-size:clamp(24px,3vw,30px);line-height:1.15;color:#141c5c">Zugang beantragen</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px">
+            <sc-for list="{{ regFields }}" as="f" hint-placeholder-count="5">
+              <label style="display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#141c5c;min-width:0">{{ f.l }}<input type="{{ f.t }}" style="padding:12px 13px;border:1px solid rgba(20,28,92,.18);border-radius:12px;background:#fff;font-size:14.5px;min-width:0"></label>
+            </sc-for>
+          </div>
+          <span style="font-size:12.5px;line-height:1.55;color:rgba(40,40,40,.75)">Wir prüfen Ihre Angaben und schalten den Zugang in der Regel innerhalb von 1–2 Werktagen frei.</span>
+          <button type="button" onClick="{{ doRegister }}" style="padding:15px 18px;border:0;border-radius:999px;background:#141c5c;color:#fbf389;font-size:15px;font-weight:700;cursor:pointer" style-hover="background:#282828">Zugang beantragen</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ showPending }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:18px;background:#fff">
+          <strong style="font-size:18px;color:#141c5c">Danke, Ihre Anfrage ist eingegangen.</strong>
+          <span style="font-size:14px;line-height:1.6;color:rgba(40,40,40,.8)">Sobald wir Ihre Angaben geprüft haben, erhalten Sie Ihre Zugangsdaten per E-Mail.</span>
+        </div>
+      </sc-if>
+      <button type="button" onClick="{{ closeLoginModal }}" style="align-self:center;padding:8px;border:0;background:none;font-size:13px;font-weight:600;color:rgba(40,40,40,.75);cursor:pointer">Ohne Login weiter</button>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ gateOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:100;background:rgba(20,28,92,.72);backdrop-filter:blur(6px);display:grid;place-items:center;padding:16px">
+    <div role="dialog" aria-modal="true" aria-label="Sind Sie eine Fachperson?" style="width:min(520px,100%);padding:clamp(24px,4vw,40px);border-radius:28px;background:#f7f4ec;display:flex;flex-direction:column;gap:18px;animation:kfFade .3s ease">
+      <img src="img/logo-kaasen.png" alt="Medizintechnik Kaasen" style="height:36px;width:auto;align-self:flex-start">
+      <h2 style="margin:0;font-size:clamp(26px,3vw,34px);line-height:1.12;color:#141c5c">Sind Sie eine Fachperson?</h2>
+      <p style="margin:0;font-size:15px;line-height:1.65;color:rgba(40,40,40,.8)">Dieser Bereich richtet sich an medizinische Fachpersonen, z. B. Ärzt:innen, Hebammen und Physiotherapeut:innen.</p>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+        <a href="index.html" style="display:flex;align-items:center;justify-content:center;padding:16px 18px;border:1.5px solid #141c5c;border-radius:999px;color:#141c5c;font-size:15px;font-weight:700;text-decoration:none;text-align:center" style-hover="background:#fff;color:#141c5c">Nein</a>
+        <button type="button" onClick="{{ confirmGate }}" style="padding:16px 18px;border:0;border-radius:999px;background:#141c5c;color:#fbf389;font-size:15px;font-weight:700;cursor:pointer" style-hover="background:#282828">Ja, ich bin Fachperson</button>
+      </div>
+      <span style="font-size:12.5px;line-height:1.55;color:rgba(40,40,40,.7)">Mit „Nein“ gelangen Sie zur Website für Privatpersonen.</span>
+    </div>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showGate&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Zugang&quot;}}">
+class Component extends DCLogic {
+  state = { gateOk: false, gateChecked: false, auth: 'login', email: '', user: null, docsFor: null, loginMsg: false, flyerPanel: false, y: 2026, m: 10, sel: 'w1', regForm: false, regDone: {}, nlSent: false, tab: 'kontakt', flyers: {}, sent: false };
+
+  quickInfos = [
+    { name: 'Perifit Care+', type: 'Biofeedbackgerät mit Vaginalsensor', img: 'img/perifit-care.png', hmv: '15.25.19.2002', dx: ['Stressinkontinenz', 'Mischinkontinenz', 'Dranginkontinenz'], href: 'index.html#produkt/perifit' },
+    { name: 'Emy by Fizimed', type: 'Biofeedbackgerät mit Vaginalsensor', img: 'img/emy.jpg', hmv: '15.25.19.2027', dx: ['Stressinkontinenz', 'Mischinkontinenz', 'Dranginkontinenz'], href: 'index.html#produkt/emy' },
+    { name: 'restifem', type: 'Stützpessar', img: 'img/restifem.jpg', hmv: '15.25.21.0098', dx: ['Stressinkontinenz', 'Beckenbodensenkung'], href: 'index.html#produkt/restifem' },
+  ];
+
+  // Fachpersonenpreise: separat vom Privatbereich verwaltet (Admin)
+  fachPrices = {
+    'Perifit Care+': { price: '94,90 €', unit: 'inkl. MwSt.' },
+    'Emy by Fizimed': { price: '129,90 €', unit: 'inkl. MwSt.' },
+    'MAPLe': { price: '125,00 €', unit: 'pro Sonde · 5 Stück' },
+  };
+
+  docTypes = [
+    { key: 'studien', label: 'Studien' },
+    { key: 'flyer', label: 'Flyer' },
+    { key: 'anleitung', label: 'Gebrauchsanweisung' },
+    { key: 'zert', label: 'Zertifizierungen (CE / MDR)' },
+  ];
+
+  docsFor(name) {
+    return [
+      { type: 'studien', title: 'Studienergebnisse ' + name },
+      { type: 'flyer', title: 'Patientenflyer ' + name },
+      { type: 'flyer', title: 'Fachpersonenflyer ' + name },
+      { type: 'anleitung', title: 'Gebrauchsanweisung ' + name },
+      { type: 'zert', title: 'EU-Konformitätserklärung (MDR)' },
+      { type: 'zert', title: 'CE-Zertifikat' },
+    ];
+  }
+
+  products = [
+    { name: 'Perifit Care+', cat: 'Beckenboden', img: 'img/perifit-care.png', desc: 'Beckenbodentrainer mit Biofeedback und App.', href: 'index.html#produkt/perifit' },
+    { name: 'Emy by Fizimed', cat: 'Beckenboden', img: 'img/emy.jpg', desc: 'Smarter Beckenbodentrainer, auch mit Physio (Emy Pro).', href: 'index.html#produkt/emy' },
+    { name: 'Apelvo', cat: 'Beckenboden', img: 'img/apelvo.jpg', desc: 'Oberflächen-EMG ohne Sonde — für Frauen, Männer und Kinder.', href: 'index.html#produkt/apelvo' },
+    { name: 'Pelvic Tool', cat: 'Männergesundheit', img: 'img/alonea-pelvic-tool.jpg', desc: 'Beckenbodentraining für Männer.', href: 'index.html#kProdukte' },
+    { name: 'Acticore', cat: 'Männergesundheit', img: 'img/acticore.jpg', desc: 'Beckenbodentraining im Sitzen — Sensor-Sitzauflage mit App, ohne Sonde.', href: 'index.html#kProdukte' },
+    { name: 'MAPLe', cat: 'Praxisgerät', img: 'img/maple-station.webp', desc: 'Beckenbodendiagnostik und -therapie für die Praxis.', acc: ['Sonden für MAPLe'], href: 'index.html#kProdukte' },
+    { name: 'Emagina', cat: 'Schwangerschaft', img: 'img/emagina.webp', desc: 'Dammvorbereitung vor der Geburt.', href: 'index.html#kProdukte' },
+    { name: 'Medela Symphony', cat: 'Milchpumpe', img: 'img/medela-symphony.webp', desc: 'Klinik-Milchpumpe zur Miete.', acc: ['Pumpset (Einzel / Doppel)', 'Hands-free Zubehör'], href: 'index.html#kMilchpumpe' },
+  ];
+
+  testimonials = [
+    { quote: 'Durch das Biofeedback sehe ich zum ersten Mal, ob ich richtig trainiere. Nach wenigen Wochen merke ich den Unterschied.', name: 'Sandra M.', role: 'Patientin', product: 'Perifit Care+', initials: 'SM', fach: false },
+    { quote: 'Meine Patientinnen bleiben motivierter dran. Die Verordnung ist dank Hilfsmittelnummer unkompliziert.', name: 'Dr. Anna K.', role: 'Gynäkologin', product: 'Emy', initials: 'AK', fach: true },
+    { quote: 'Für die Nachsorge empfehle ich die Dammvorbereitung regelmäßig — die Rückmeldungen sind sehr positiv.', name: 'Julia R.', role: 'Hebamme', product: 'Emagina', initials: 'JR', fach: true },
+    { quote: 'Endlich ein Training, das ich ohne Sonde zuhause machen kann. Die Beratung war super.', name: 'Thomas B.', role: 'Patient', product: 'Apelvo', initials: 'TB', fach: false },
+  ];
+
+  webinars = [
+    { id: 'w1', date: '2026-11-05', time: '18:00–19:00 Uhr', title: 'Beckenbodentraining mit Biofeedback in der Praxis', product: 'Perifit · Emy', topic: 'Einsatz smarter Beckenbodentrainer, Indikationen und Verordnung.', mod: '[Name Moderation]', platform: 'Zoom', url: '#', reg: true },
+    { id: 'w2', date: '2026-11-19', time: '17:30–18:15 Uhr', title: 'Hilfsmittel bei Inkontinenz richtig verordnen', product: 'Verordnung', topic: 'Positionsnummern, Diagnosen und Kostenübernahme durch die GKV.', mod: '[Name Moderation]', platform: 'Microsoft Teams', url: '#', reg: false },
+    { id: 'w3', date: '2026-12-03', time: '18:00–19:00 Uhr', title: 'Dammvorbereitung mit Emagina', product: 'Emagina', topic: 'Studienlage und Anwendung in der Geburtsvorbereitung.', mod: '[Name Moderation]', platform: 'Zoom', url: '#', reg: true },
+    { id: 'w4', date: '2026-12-17', time: '16:00–17:00 Uhr', title: 'MAPLe: Beckenbodendiagnostik in der Praxis', product: 'MAPLe', topic: 'Messung, Auswertung und Therapieplanung mit MAPLe.', mod: '[Name Moderation]', platform: 'Zoom', url: '#', reg: false },
+  ];
+
+  flyerList = [
+    { id: 'f1', title: 'Smarte Beckenbodentrainer für Frauen', desc: 'Perifit Care+, Emy', img: 'img/perifit-care.png' },
+    { id: 'f2', title: 'Beckenbodentraining in der Schwangerschaft', desc: 'Apelvo', img: 'img/apelvo.jpg' },
+    { id: 'f3', title: 'Smarte Beckenbodentrainer für Männer', desc: 'Apelvo, Acticore, Pelvic Tool', img: 'img/alonea-pelvic-tool.jpg' },
+    { id: 'f4', title: 'MAPLe Praxisgerät', desc: 'Patientenflyer', img: 'img/maple.jpg' },
+    { id: 'f5', title: 'MAPLe Praxisgerät', desc: 'Fachpersonenflyer', img: 'img/maple.jpg' },
+    { id: 'f6', title: 'Emagina Dammvorbereitung', desc: 'Patientenflyer', img: 'img/emagina.webp' },
+    { id: 'f7', title: 'Emagina Dammvorbereitung', desc: 'DIN A4 mit Studienergebnissen', img: 'img/emagina.webp' },
+  ];
+
+  componentDidMount() {
+    if (this.props.showGate === false) { this.setState({ gateOk: true }); return; }
+    try { sessionStorage.removeItem('kaasenFachOk'); } catch (e) {}
+  }
+
+  componentWillUnmount() { clearTimeout(this._lt); }
+
+  renderLoader() {
+    const h = React.createElement;
+    return h('div', { role: 'status', 'aria-live': 'polite', style: { position: 'fixed', inset: 0, zIndex: 110, background: '#141c5c', color: '#f7f4ec', display: 'grid', placeItems: 'center', padding: 24, animation: 'kfFade .35s ease' } },
+      h('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 26, textAlign: 'center', width: 'min(360px,100%)' } },
+        h('div', { style: { padding: '14px 20px', borderRadius: 18, background: '#f7f4ec' } }, h('img', { src: 'img/logo-kaasen.png', alt: 'Medizintechnik Kaasen', style: { height: 38, width: 'auto', display: 'block' } })),
+        h('span', { 'aria-hidden': true, style: { width: 46, height: 46, borderRadius: '50%', border: '3px solid rgba(247,244,236,.18)', borderTopColor: '#fbf389', animation: 'kfSpin .9s linear infinite' } }),
+        h('div', { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
+          h('strong', { style: { fontSize: 20, fontWeight: 700 } }, 'Fachbereich wird geladen …'),
+          h('span', { style: { fontSize: 14, color: 'rgba(247,244,236,.75)' } }, 'Infos, Produkte und Webinare für Fachpersonen')),
+        h('div', { style: { width: '100%', height: 4, borderRadius: 999, background: 'rgba(247,244,236,.15)', overflow: 'hidden' } },
+          h('div', { style: { height: '100%', background: '#fbf389', transformOrigin: 'left', animation: 'kfBar 5s linear forwards' } }))));
+  }
+
+  scrollTo(id) {
+    setTimeout(() => { const el = document.getElementById(id); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' }); }, 60);
+  }
+
+  calendar() {
+    const { y, m, sel } = this.state;
+    const first = new Date(y, m, 1);
+    const offset = (first.getDay() + 6) % 7;
+    const days = new Date(y, m + 1, 0).getDate();
+    const pad = (n) => String(n).padStart(2, '0');
+    const cells = [];
+    for (let i = 0; i < offset; i++) cells.push({ label: '', off: true, aria: '', bg: 'transparent', fg: 'transparent', border: 'transparent', dot: 'transparent', fw: 500, cursor: 'default', pick: () => {} });
+    for (let d = 1; d <= days; d++) {
+      const key = y + '-' + pad(m + 1) + '-' + pad(d);
+      const w = this.webinars.find((x) => x.date === key);
+      const isSel = w && w.id === sel;
+      cells.push({
+        label: String(d), off: !w, aria: w ? w.title : String(d),
+        bg: isSel ? '#141c5c' : w ? '#fbf389' : '#fff',
+        fg: isSel ? '#fbf389' : '#141c5c',
+        border: w ? (isSel ? '#141c5c' : '#e8dc5a') : 'rgba(20,28,92,.06)',
+        dot: w ? (isSel ? '#fbf389' : '#141c5c') : 'transparent',
+        fw: w ? 800 : 500, cursor: w ? 'pointer' : 'default',
+        pick: () => w && this.setState({ sel: w.id, regForm: false }),
+      });
+    }
+    while (cells.length % 7) cells.push({ label: '', off: true, aria: '', bg: 'transparent', fg: 'transparent', border: 'transparent', dot: 'transparent', fw: 500, cursor: 'default', pick: () => {} });
+    return cells;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    const fmt = (iso, long) => { const [Y, M, D] = iso.split('-').map(Number); const dt = new Date(Y, M - 1, D); return long ? dt.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : D + '. ' + months[M - 1].slice(0, 3) + '.'; };
+    const wRaw = this.webinars.find((x) => x.id === s.sel) || this.webinars[0];
+    const w = { ...wRaw, noReg: !wRaw.reg, dateLabel: fmt(wRaw.date, false), dateLong: fmt(wRaw.date, true) };
+    const done = !!s.regDone[w.id];
+    const on = (a) => a ? { bg: '#141c5c', fg: '#fbf389' } : { bg: 'transparent', fg: '#141c5c' };
+    const nFly = Object.values(s.flyers).filter(Boolean).length;
+    const isFly = s.tab === 'flyer';
+    const baseFields = [{ l: 'Name *', t: 'text' }, { l: 'Praxis / Einrichtung', t: 'text' }, { l: 'E-Mail *', t: 'email' }, { l: 'Telefon', t: 'tel' }];
+    const addrFields = [{ l: 'Straße & Hausnummer *', t: 'text' }, { l: 'PLZ & Ort *', t: 'text' }];
+    return {
+      quickInfos: this.quickInfos,
+      products: this.products.map((p) => { const fp = this.fachPrices[p.name]; return { ...p, hasImg: !!p.img, noImg: !p.img, hasAcc: !!(p.acc && p.acc.length), acc: p.acc || [], showFach: !!fp && !!s.user, lockedFach: !!fp && !s.user, noFach: !fp, fachPrice: fp ? fp.price : '', fachUnit: fp ? fp.unit : '', openDocs: () => s.user ? this.setState({ docsFor: p.name }) : this.setState({ loginModal: true, auth: 'login' }) }; }),
+      loggedIn: !!s.user, loggedOut: !s.user, userLabel: s.user || '',
+      docsLabel: s.user ? 'Unterlagen' : 'Unterlagen (Login)',
+      logout: () => this.setState({ user: null, docsFor: null }),
+      loginOpen: !!s.loginModal && s.gateOk && !s.loading,
+      openLoginModal: () => this.setState({ loginModal: true, auth: 'login', loginMsg: false }),
+      closeLoginModal: () => this.setState({ loginModal: false }),
+      email: s.email, setEmail: (e) => this.setState({ email: e.target.value }),
+      forgot: (e) => { e.preventDefault(); this.setState({ loginMsg: true }); },
+      regFields: [{ l: 'Vorname & Name *', t: 'text' }, { l: 'Beruf / Fachrichtung *', t: 'text' }, { l: 'Praxis / Einrichtung *', t: 'text' }, { l: 'E-Mail *', t: 'email' }, { l: 'Telefon', t: 'tel' }, { l: 'LANR / Berufsnachweis', t: 'text' }],
+      docsOpen: !!s.docsFor,
+      closeDocs: () => this.setState({ docsFor: null }),
+      docs: (() => { const n = s.docsFor || ''; const fp = this.fachPrices[n]; const all = this.docsFor(n); return { name: n, hasFach: !!fp, fachPrice: fp ? fp.price : '', fachUnit: fp ? fp.unit : '', groups: this.docTypes.map((d) => ({ label: d.label, items: all.filter((x) => x.type === d.key).map((x) => ({ ...x, get: (e) => e.preventDefault() })) })) }; })(),
+      testimonials: this.testimonials.map((t) => ({ ...t, bubble: t.fach ? '#141c5c' : '#fff', ink: t.fach ? '#f7f4ec' : '#282828' })),
+
+      gateOpen: !s.gateOk, gateChecked: s.gateChecked, gateDisabled: !s.gateChecked,
+      gateOpacity: s.gateChecked ? 1 : 0.4, gateCursor: s.gateChecked ? 'pointer' : 'not-allowed',
+      gateBorder: s.gateChecked ? '#141c5c' : 'rgba(20,28,92,.14)',
+      toggleGate: (e) => this.setState({ gateChecked: e.target.checked }),
+      loading: !!s.loading,
+      loader: this.renderLoader(),
+      confirmGate: () => { clearTimeout(this._lt); this._lt = setTimeout(() => this.setState({ loading: false }), 5000); this.setState({ loading: true }); try { sessionStorage.setItem('kaasenFachOk', '1'); } catch (e) {} this.setState({ gateOk: true }); },
+
+      authOpen: !!s.auth, showLogin: s.auth === 'login', showRegister: s.auth === 'register', showPending: s.auth === 'pending',
+      authTabA: on(s.auth === 'login'), authTabB: on(s.auth === 'register' || s.auth === 'pending'),
+      openLogin: () => this.setState({ auth: 'login', loginMsg: false }),
+      openRegister: () => this.setState({ auth: 'register' }),
+      closeAuth: () => this.setState({ auth: null }),
+      doLogin: () => this.setState({ loginModal: false, loginMsg: false, user: s.email || 'Fachperson' }),
+      doRegister: () => this.setState({ auth: 'pending' }),
+      loginMsg: s.loginMsg,
+
+      flyerPanel: s.flyerPanel,
+      openFlyerPanel: () => this.setState({ flyerPanel: true }),
+      closeFlyerPanel: () => this.setState({ flyerPanel: false }),
+      goOrderFlyer: () => { this.setState({ flyerPanel: false, tab: 'flyer', sent: false }); this.scrollTo('fKontakt'); },
+      downloads: this.flyerList.map((f) => ({ prod: f.desc, title: f.title, fmt: 'PDF', get: (e) => e.preventDefault() })),
+
+      monthLabel: months[s.m] + ' ' + s.y,
+      weekdays: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
+      cells: this.calendar(),
+      prevMonth: () => this.setState((p) => (p.m === 0 ? { m: 11, y: p.y - 1 } : { m: p.m - 1 })),
+      nextMonth: () => this.setState((p) => (p.m === 11 ? { m: 0, y: p.y + 1 } : { m: p.m + 1 })),
+      upcoming: this.webinars.map((x) => ({ short: fmt(x.date, false), title: x.title, bg: x.id === s.sel ? '#fff' : 'transparent', pick: () => { const [Y, M] = x.date.split('-').map(Number); this.setState({ sel: x.id, y: Y, m: M - 1, regForm: false }); } })),
+      w,
+      regBtn: !s.regForm && !done, regFormOpen: s.regForm && !done, regDone: done,
+      openWebReg: () => this.setState({ regForm: true }),
+      sendWebReg: () => this.setState((p) => ({ regDone: { ...p.regDone, [w.id]: true }, regForm: false })),
+
+      nlForm: !s.nlSent, nlSent: s.nlSent, sendNl: () => this.setState({ nlSent: true }),
+
+      tabA: on(!isFly), tabB: on(isFly),
+      tabKontakt: () => this.setState({ tab: 'kontakt', sent: false }),
+      tabFlyer: () => this.setState({ tab: 'flyer', sent: false }),
+      flyers: this.flyerList.map((f) => { const v = !!s.flyers[f.id]; return { ...f, on: v, border: v ? '#141c5c' : 'rgba(20,28,92,.12)', bg: v ? '#fffbe0' : '#fff', toggle: () => this.setState((p) => ({ flyers: { ...p.flyers, [f.id]: !p.flyers[f.id] } })) }; }),
+      flyerCount: nFly ? nFly + ' ausgewählt' : 'Noch nichts ausgewählt',
+      showFlyerForm: isFly && !s.sent, showForm: !s.sent, formSent: s.sent,
+      formFields: isFly ? baseFields.concat(addrFields) : baseFields,
+      msgLabel: isFly ? 'Anmerkung (z. B. Stückzahl)' : 'Nachricht *',
+      submitLabel: isFly ? 'Infomaterial bestellen' : 'Kontakt anfragen',
+      sentTitle: isFly ? 'Danke für Ihre Bestellung.' : 'Danke für Ihre Anfrage.',
+      sendForm: () => this.setState({ sent: true }),
+      resetForm: () => this.setState({ sent: false, flyers: {} }),
+    };
+  }
+}
+</script>
+</body>
+</html>
