@@ -6,6 +6,36 @@ Complete handoff package to build the new **Medizintechnik Kaasen GmbH** website
 
 ---
 
+## Quick start (for Julien)
+
+**What this is:** the new website for Medizintechnik Kaasen GmbH (medizintechnik-kaasen.de), rebuilt in Next.js. It replaces the previous React version, which is still on `main`. The app covers the public site, shop, product pages, the Fachbereich (area for healthcare professionals) and a demo admin panel.
+
+**Stack:** Next.js 15 (App Router) · TypeScript (strict) · Tailwind CSS v4 · zod. **Frontend only.** Forms, emails, auth and admin data are mocked behind `app-kaasen/lib/api/`. The backend will be built later.
+
+**Run it locally** (Node 20+):
+
+```bash
+cd app-kaasen
+npm install
+cp .env.example .env.local   # optional, everything has defaults
+npm run dev                  # http://localhost:3000
+```
+
+Checks: `npm run build` and `npm run lint`.
+
+**Demo logins** (frontend mock only, to be removed when real auth exists):
+
+| Area | URL | Email | Password |
+|---|---|---|---|
+| Fachbereich (pro prices + PDFs) | `/fachbereich` | `demo@kaasen.de` | `kaasen2026` |
+| Admin | `/admin` | `admin@kaasen.de` | `kaasen2026` |
+
+**Backend contract:** [`app-kaasen/docs/BACKEND.md`](app-kaasen/docs/BACKEND.md) lists the API endpoints, payloads and email routing the backend needs to implement.
+
+Where things are: the app is in `app-kaasen/` (structure in [`app-kaasen/README.md`](app-kaasen/README.md)). The UI source of truth is in `design/` + `screenshots/`. The full handoff spec follows below.
+
+---
+
 ## 1. About the company
 
 | | |
